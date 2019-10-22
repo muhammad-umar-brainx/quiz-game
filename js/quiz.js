@@ -1,4 +1,4 @@
-var myQuestions = [
+let myQuestions = [
     {
       question: "Why so JavaScript and Java have similar name?",
       answers: {
@@ -107,10 +107,63 @@ var myQuestions = [
 //   $("h1").text("The text from the id01 paragraph is: ");
 // });
 
-var quizBody = $("#quiz-body");
-var submitBtn = $("#submit");
-var result = $("#result");
+let quizBody = $("#quiz-body");
+let submitBtn = $("#submit");
+let result = $("#result");
+let totalQuestionsToShow = 3;
+
+submitBtn.click(showResult);
 
 function fillQuizBody() {
+  let mcqsDiv = document.createElement("div");
+  // quizBody.push("<h1>Hy</h1>>")
+  let mcqsHeading = document.createElement("h1");
+  let mcqsOptions = document.createElement("input");
+
+
+  const questionHtml = [];
+
+  // let randomArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let randomQuestions = [];
+  let totalNumberOfQuestions = myQuestions.length;
+  let selectedQuestions = 0;
+  while(totalQuestionsToShow != selectedQuestions){
+    let randNum = getRndInteger(0, totalNumberOfQuestions);
+
+    if (!randomQuestions.includes(randNum)){
+      randomQuestions.push(randNum);
+      selectedQuestions++;
+    }
+
+  }
+
+  for(let i in randomQuestions){
+    console.log(randomQuestions[i]);
+  }
+
+  randomQuestions.forEach(insertQuestion);
 
 }
+
+function insertQuestion(questionIndex, index, arr) {
+// quizBody.append(`${val}`);
+  quizBody.append(`<h1> ${index}: ${myQuestions[questionIndex].question}</h1>`);
+// <input type="radio" name="i" class="i"><br>B:
+// <input type="radio" name="i" class="i"><br>C:
+// <input type="radio" name="i" class="i"><br>
+
+  for (let mcq in myQuestions[questionIndex].answers) {
+    quizBody.append(`<input type="radio" name="${questionIndex}" value="${mcq}"> ${mcq} -  ${myQuestions[questionIndex].answers[mcq]} <br>`);
+  }
+
+}
+
+function showResult() {
+console.log("hello world")
+}
+
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+fillQuizBody();
