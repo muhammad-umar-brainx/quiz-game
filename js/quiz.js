@@ -139,23 +139,25 @@ function fillQuizBody() {
   // let randomArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   let totalNumberOfQuestions = myQuestions.length;
-  let selectedQuestions = 0;
-  while(totalQuestionsToShow != selectedQuestions){
-    let randNum = getRndInteger(0, totalNumberOfQuestions);
 
-    if (!randomQuestions.includes(randNum)){
-      randomQuestions.push(randNum);
-      selectedQuestions++;
-    }
-
-  }
-
-  for(let i in randomQuestions){
-    console.log(randomQuestions[i]);
-  }
+  randomQuestions = generateArrayOfRandom(0, totalNumberOfQuestions, 3, []);
 
   randomQuestions.forEach(insertQuestion);
 
+}
+
+
+function generateArrayOfRandom(min, max, totalNumberToGenerate, receivedArray) {
+  let selectedQuestions = 0;
+  let myRandNumList = receivedArray;
+  while(totalNumberToGenerate != selectedQuestions){
+    let randNum = getRndInteger(min, max);
+    if (!myRandNumList.includes(randNum)){
+      myRandNumList.push(randNum);
+      selectedQuestions++;
+    }
+  }
+  return myRandNumList;
 }
 
 function insertQuestion(questionIndex, index, arr) {
@@ -164,13 +166,33 @@ function insertQuestion(questionIndex, index, arr) {
 // <input type="radio" name="i" class="i"><br>B:
 // <input type="radio" name="i" class="i"><br>C:
 // <input type="radio" name="i" class="i"><br>
+  let optionsOfEachQuestion = [ myQuestions[questionIndex].correctAnswer.charCodeAt(0) ];
+  optionsOfEachQuestion =generateArrayOfRandom(97, 101, 2, optionsOfEachQuestion);
+  optionsOfEachQuestion = optionsOfEachQuestion.map(convertIntToCharMap);
 
-  for (let mcq in myQuestions[questionIndex].answers) {
-    let v= `<input type="radio" name=${questionIndex} value=${mcq}> ${mcq} -  ${myQuestions[questionIndex].answers[mcq]} <br>`;
+// debugger;
+//   for (let mcq in myQuestions[questionIndex].answers) {
+  let optionChar = 'a';
+  for (let mcq in optionsOfEachQuestion) {
+    // let v= `<input type="radio" name=${questionIndex} value=${mcq}> ${mcq} -  ${myQuestions[questionIndex].answers[mcq]} <br>`;
+    mcq = optionsOfEachQuestion[mcq];
     // debugger;
-    quizBody.append(`<input type="radio" name=${questionIndex} value=${mcq}> ${mcq} -  ${myQuestions[questionIndex].answers[mcq]} <br>`);
+    quizBody.append(`<input type="radio" name=${questionIndex} value=${mcq}> ${optionChar} -  ${myQuestions[questionIndex].answers[mcq]} <br>`);
+    optionChar = nextChar(optionChar);
   }
 
+}
+
+function nextChar(c) {
+  return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+
+function convertCharToInt(myChar, index) {
+  return myChar.charCodeAt(0);
+}
+
+function convertIntToCharMap(myCharNum, index) {
+  return String.fromCharCode(myCharNum);
 }
 
 function showResult() {
@@ -181,6 +203,7 @@ function showResult() {
     // if( radioValue == myQuestions[questionIndex].correctAnswer ){
     //   alert("");
     // }
+    let correct = 0;
     $('input:radio:checked').each(function() {
       // Iterate through all checked radio buttons
 
@@ -190,6 +213,7 @@ function showResult() {
         // this.addClass("text-success");
         $(`h1#${this.name}`).addClass("text-success");
         console.log(this.value);
+        correct++;
       }
       // else{
       //   $(`h1:eq(${index+1})`).addClass("text-danger");
@@ -197,8 +221,13 @@ function showResult() {
       // }
 
     });
-    
+
   // });
+  Swal.fire(
+    'Good job!',
+    'Correct Answers are '+correct,
+    'success'
+  )
 }
 
 function getRndInteger(min, max) {
