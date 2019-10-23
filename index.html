@@ -28,9 +28,12 @@
   <![endif]-->
 
   <!-- Add your site or application content here -->
-  <div class="jumbotron">
-    <h1 class="text-center text-primary">Welcome to Quiz</h1>
-    <div class="quiz" id="quiz-body">
+  <div class="jumbotron text-center" id="welcome-div">
+    <h1 class="text-primary text-center">Welcome to JS Quiz</h1>
+    <button id="startQuizBtn" class="btn btn-primary">Start Quiz</button>
+  </div>
+  <div class="jumbotron invisible" id="quiz-container">
+    <div class="quiz " id="quiz-body">
 <!--      <div>-->
 <!--        <h1>Birth date of Quid-e-Azam</h1>-->
 <!--        <div>A:-->
@@ -41,10 +44,11 @@
 <!--      </div>-->
 
     </div>
+    <div class="container-fluid text-center">
+      <button id="submit" class="btn btn-primary">Submit Quiz</button>
+    </div>
   </div>
-  <div class="container-fluid text-center">
-    <button id="submit" class="btn btn-primary">Submit Quiz</button>
-  </div>
+
   <div id="result"></div>
 
 <!--  <div class="progress">-->
@@ -63,6 +67,7 @@
     ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
   </script>
   <script src="https://www.google-analytics.com/analytics.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </body>
 
 </html>
